@@ -1,8 +1,8 @@
 from rest_framework import viewsets
+from rest_framework import filters
+from django_filters.rest_framework import DjangoFilterBackend
 from .serializer import *
 from .models import *
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
 
 # Create your views here.
 class UsuarioViewSet(viewsets.ModelViewSet):
@@ -12,10 +12,10 @@ class UsuarioViewSet(viewsets.ModelViewSet):
     # Clase serializadora
     serializer_class = UsuarioSerializer
 
+    # Se agrega un soporte para los filtros
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
 
-    def list(self, request, *args, **kwargs):
-        response = super().list(request, *args, **kwargs)
+    # Campos que se pueden filtrar
+    filterset_fields = ["correo", "contrasenia"]
 
-        print(response.data)  
 
-        return response
