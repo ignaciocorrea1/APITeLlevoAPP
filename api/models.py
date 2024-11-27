@@ -21,8 +21,12 @@ class Viaje(models.Model):
     costoPersona = models.IntegerField()
     capacidadActual = models.IntegerField(default=0)
     capacidadMaxima = models.IntegerField()
-    direccionInicio = models.CharField(max_length=50)
-    direccionFinal = models.CharField(max_length=50)
+    direccionInicio = models.CharField(max_length=200)
+    direccionFinal = models.CharField(max_length=200)
+    coordenadasInicioLat = models.DecimalField(max_digits=15, decimal_places=10)
+    coordenadasInicioLng = models.DecimalField(max_digits=15, decimal_places=10)
+    coordenadasFinalLat = models.DecimalField(max_digits=15, decimal_places=10)
+    coordenadasFinalLng = models.DecimalField(max_digits=15, decimal_places=10)
     horaInicio = models.TimeField()
 
     def __str__(self):
