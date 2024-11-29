@@ -14,6 +14,8 @@ class UsuarioViewSet(viewsets.ModelViewSet):
 class ViajeViewSet(viewsets.ModelViewSet):
     queryset = Viaje.objects.all()
     serializer_class = ViajeSerializer
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+    filterset_fields = ["conductor", "estado"]
     
 class DetalleViajeViewSet(viewsets.ModelViewSet):
     queryset = DetalleViaje.objects.all()

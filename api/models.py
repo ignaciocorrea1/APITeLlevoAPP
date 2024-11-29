@@ -28,6 +28,7 @@ class Viaje(models.Model):
     coordenadasFinalLat = models.DecimalField(max_digits=15, decimal_places=10)
     coordenadasFinalLng = models.DecimalField(max_digits=15, decimal_places=10)
     horaInicio = models.TimeField()
+    estado = models.CharField(max_length=30)
 
     def __str__(self):
         return f"Viaje de: {self.conductor.nombres} {self.conductor.paterno}"
