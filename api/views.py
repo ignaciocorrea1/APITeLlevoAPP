@@ -9,7 +9,7 @@ class UsuarioViewSet(viewsets.ModelViewSet):
     queryset = Usuario.objects.all()
     serializer_class = UsuarioSerializer
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
-    filterset_fields = ["correo", "contrasenia"]
+    filterset_fields = ["idUsuario", "correo", "contrasenia"]
 
 class ViajeViewSet(viewsets.ModelViewSet):
     queryset = Viaje.objects.all()
@@ -24,3 +24,5 @@ class DetalleViajeViewSet(viewsets.ModelViewSet):
 class SolicitudViajeViewSet(viewsets.ModelViewSet):
     queryset = SolicitudViaje.objects.all()
     serializer_class = SolicitudViajeSerializer
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+    filterset_fields = ["viaje"]
