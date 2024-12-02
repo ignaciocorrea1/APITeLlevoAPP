@@ -15,14 +15,16 @@ class ViajeViewSet(viewsets.ModelViewSet):
     queryset = Viaje.objects.all()
     serializer_class = ViajeSerializer
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
-    filterset_fields = ["conductor", "estado"]
+    filterset_fields = ["conductor", "estado", "idViaje"]
     
 class DetalleViajeViewSet(viewsets.ModelViewSet):
     queryset = DetalleViaje.objects.all()
     serializer_class = DetalleViajeSerializer
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+    filterset_fields = ["idViaje"]
     
 class SolicitudViajeViewSet(viewsets.ModelViewSet):
     queryset = SolicitudViaje.objects.all()
     serializer_class = SolicitudViajeSerializer
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
-    filterset_fields = ["viaje"]
+    filterset_fields = ["viaje", "pasajero"]

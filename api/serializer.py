@@ -16,9 +16,6 @@ class DetalleViajeSerializer(serializers.ModelSerializer):
         model = DetalleViaje
         fields = '__all__'
 class SolicitudViajeSerializer(serializers.ModelSerializer):
-    pasajero = UsuarioSerializer()
-    viaje = ViajeSerializer()
-    
     class Meta:
         model = SolicitudViaje
         fields = '__all__'
