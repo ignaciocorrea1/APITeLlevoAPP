@@ -1,6 +1,7 @@
 from rest_framework import viewsets, filters, status
 from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
+from django_filters import rest_framework as django_filters
 from .serializer import *
 from .models import *
 
@@ -11,13 +12,49 @@ class UsuarioViewSet(viewsets.ModelViewSet):
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
     filterset_fields = ["idUsuario", "correo", "contrasenia"]
 
+class ViajeFilter(django_filters.FilterSet):
+    estado = django_filters.CharFilter(method='filter_estado')
+    
+    # Los fields filtran por conductor y viaje especificos
+    class Meta:
+        model = Viaje
+        fields = {
+            'conductor': ['exact'],
+            'idViaje': ['exact'],
+        }
+    
+    def filter_estado(self, queryset, name, value):
+        # Si el valor del estado en la solicitud es activo se filtra por iniciado o en ruta
+        if value == 'activo':
+            return queryset.filter(estado__in=['iniciado', 'en ruta'])
+        # Si el estado es distinto se filtra por ese estado
+        return queryset.filter(estado=value)
+
 class ViajeViewSet(viewsets.ModelViewSet):
     queryset = Viaje.objects.all()
     serializer_class = ViajeSerializer
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
-    filterset_fields = ["conductor", "estado", "idViaje"]
+    filterset_class = ViajeFilter
 
-    
+    # Filtrar por viaje en iniciado o en ruta
+    def get_queryset(self):
+        queryset = Viaje.objects.all()
+        conductor = self.request.query_params.get('conductor', None)
+        estado = self.request.query_params.get('estado', None)
+
+        if conductor is not None:
+            queryset = queryset.filter(conductor=conductor)
+
+        # Si el estado es 'activo', se filtra por ambos estados
+        if estado == 'activo':  
+            queryset = queryset.filter(estado__in=['iniciado', 'en ruta'])
+
+        # Si es otro estado, se filtra por ese estado
+        elif estado is not None:  
+            queryset = queryset.filter(estado=estado)
+            
+        return queryset
+
     # Solicitudes POST
     def create(self, request, *args, **kwargs):
         # Obtencion de las iDs
